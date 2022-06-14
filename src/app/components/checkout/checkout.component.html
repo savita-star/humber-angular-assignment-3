@@ -3,16 +3,18 @@
 </mat-toolbar>
 
 <div class="container">
-  <form [formGroup]="checkoutForm" class="form">
+  <h1>Total {{ dataStoreService?.total$ | async }}</h1>
+  <form
+    [formGroup]="checkoutForm"
+    (ngSubmit)="onSubmit(checkoutForm.getRawValue())"
+    class="form"
+  >
     <mat-form-field class="form-element">
       <input
         matInput
         placeholder="Please enter firstname"
         formControlName="firstname"
       />
-      <!-- <mat-error *ngIf="!formGroup.controls['email'].valid && formGroup.controls['email'].touched">
-        {{ getErrorEmail() }}
-      </mat-error> -->
     </mat-form-field>
 
     <mat-form-field class="form-element">
@@ -21,9 +23,6 @@
         placeholder="Please enter lastname"
         formControlName="lastname"
       />
-      <!-- <mat-error *ngIf="!name.valid && name.touched">
-        {{ titleAlert }}
-      </mat-error> -->
     </mat-form-field>
 
     <mat-form-field class="form-element">
@@ -35,30 +34,10 @@
         matAutosizeMaxRows="5"
         formControlName="address"
       ></textarea>
-      <!-- <mat-error
-        *ngIf="
-          !formGroup.controls['description'].valid &&
-          formGroup.controls['description'].touched
-        "
-      >
-        Required field, must be between 5 and 10 characters.
-      </mat-error> -->
     </mat-form-field>
 
     <mat-form-field class="form-element">
       <input matInput placeholder="Please enter city" formControlName="city" />
-      <!-- <mat-hint
-        >Choose a password of at least eight characters, one uppercase letter
-        and one number</mat-hint
-      > -->
-      <!-- <mat-error
-        *ngIf="
-          !formGroup.controls['password'].valid &&
-          formGroup.controls['password'].touched
-        "
-      >
-        {{ getErrorPassword() }}
-      </mat-error> -->
     </mat-form-field>
 
     <mat-form-field class="form-element">
@@ -67,18 +46,6 @@
         placeholder="Please enter postal code"
         formControlName="postalCode"
       />
-      <!-- <mat-hint
-        >Choose a password of at least eight characters, one uppercase letter
-        and one number</mat-hint
-      > -->
-      <!-- <mat-error
-        *ngIf="
-          !formGroup.controls['password'].valid &&
-          formGroup.controls['password'].touched
-        "
-      >
-        {{ getErrorPassword() }}
-      </mat-error> -->
     </mat-form-field>
 
     <mat-form-field appearance="fill" class="form-element">
@@ -102,7 +69,8 @@
     <mat-form-field class="form-element">
       <input
         matInput
-        type="number"
+        creditCard
+        maxlength="16"
         placeholder="Please enter credit card number"
         formControlName="card"
       />
@@ -111,13 +79,23 @@
     <mat-form-field class="form-element">
       <input
         matInput
-        placeholder="Please enter expiry date"
+        maxlength="7"
+        placeholder="Credit Card expiry - MM/YYYY"
         formControlName="expiryDate"
       />
+      <mat-error *ngIf="checkoutForm.controls['expiryDate'].invalid">
+        Expiry date format should be MM/YYYY
+      </mat-error>
     </mat-form-field>
 
     <mat-form-field class="form-element">
-      <input matInput placeholder="Please enter cvc" formControlName="cvc" />
+      <input
+        matInput
+        creditCard
+        placeholder="Please enter cvc"
+        maxlength="4"
+        formControlName="cvc"
+      />
     </mat-form-field>
 
     <mat-form-field class="form-element">
